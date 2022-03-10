@@ -44,7 +44,6 @@ public class PrenotazionePartitaServlet extends HttpServlet {
 		String alert = "1";
 		String dataPartita;
 		String sport;
-		String username;
 		String data_anno, data_mese, data_giorno;
 		String campoFisso;
 		String metodoPagamento;
@@ -165,9 +164,8 @@ public class PrenotazionePartitaServlet extends HttpServlet {
 		
 		else if(azione.equalsIgnoreCase("confermaPrenotazione")) {
 		
-			username = (String)currentsession.getAttribute("username");
-			u = Utente.getUtente(username);
-			//u = UtenteDao.selectUser(username);
+			u = (Utente)currentsession.getAttribute("utente");
+			
 			//idCampo = Integer.parseInt(String.valueOf(currentsession.getAttribute("campo"))) ;
 			//c = CampoDao.selectCampo(idCampo);
 			c = (Campo)currentsession.getAttribute("campo");

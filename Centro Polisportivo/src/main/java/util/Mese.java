@@ -267,6 +267,33 @@ public class Mese {
 		else
 			return "Dicembre";
 	}
+	
+	public static String meseToNumero (String numeroMese) {
+		if(numeroMese.equalsIgnoreCase("1") || numeroMese.equalsIgnoreCase("01"))
+			return "Gennaio";
+		else if (numeroMese.equalsIgnoreCase("2") || numeroMese.equalsIgnoreCase("02"))
+			return "Febbraio";
+		else if(numeroMese.equalsIgnoreCase("3") || numeroMese.equalsIgnoreCase("03"))
+			return "Marzo";
+		else if(numeroMese.equalsIgnoreCase("4") || numeroMese.equalsIgnoreCase("04"))
+			return "Aprile";
+		else if (numeroMese.equalsIgnoreCase("5") || numeroMese.equalsIgnoreCase("05"))
+			return "Maggio";
+		else if (numeroMese.equalsIgnoreCase("6") || numeroMese.equalsIgnoreCase("06"))
+			return "Giugno";
+		else if (numeroMese.equalsIgnoreCase("7") || numeroMese.equalsIgnoreCase("07"))
+			return "Luglio";
+		else if (numeroMese.equalsIgnoreCase("8") || numeroMese.equalsIgnoreCase("08"))
+			return "Agosto";
+		else if (numeroMese.equalsIgnoreCase("9") || numeroMese.equalsIgnoreCase("09"))
+			return "Settembre";
+		else if(numeroMese.equalsIgnoreCase("10"))
+			return "Ottobre";
+		else if (numeroMese.equalsIgnoreCase("11"))
+			return "Novembre";
+		else
+			return "Dicembre";
+	}
 
 
 	public static void main (String[] args) {

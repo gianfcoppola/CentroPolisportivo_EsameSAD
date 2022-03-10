@@ -2,6 +2,8 @@ package controller;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -256,7 +258,7 @@ public class GestioneCorsiServlet extends HttpServlet {
 											if(giorni[iii].equalsIgnoreCase("lunedi")) {
 												for(int iiii=0; iiii<cal.getLunedi().size(); iiii++) {
 													data = cal.getLunedi().get(iiii);
-													Prenotazione pre = new Prenotazione(corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
+													Prenotazione pre = new Prenotazione(u, corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
 													Campo.registraPrenotazione(pre);
 													//PrenotazioneDao.insertPrenotazione(pre);
 												}
@@ -265,7 +267,7 @@ public class GestioneCorsiServlet extends HttpServlet {
 											else if(giorni[iii].equalsIgnoreCase("martedi")) {
 												for(int iiii=0; iiii<cal.getMartedi().size(); iiii++) {
 													data = cal.getMartedi().get(iiii);
-													Prenotazione pre = new Prenotazione(corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
+													Prenotazione pre = new Prenotazione(u, corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
 													Campo.registraPrenotazione(pre);
 													//PrenotazioneDao.insertPrenotazione(pre);
 												}
@@ -274,7 +276,7 @@ public class GestioneCorsiServlet extends HttpServlet {
 											else if(giorni[iii].equalsIgnoreCase("mercoledi")) {
 												for(int iiii=0; iiii<cal.getMercoledi().size(); iiii++) {
 													data = cal.getMercoledi().get(iiii);
-													Prenotazione pre = new Prenotazione(corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
+													Prenotazione pre = new Prenotazione(u, corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
 													Campo.registraPrenotazione(pre);
 													//PrenotazioneDao.insertPrenotazione(pre);
 												}
@@ -283,7 +285,7 @@ public class GestioneCorsiServlet extends HttpServlet {
 											else if(giorni[iii].equalsIgnoreCase("giovedi")) {
 												for(int iiii=0; iiii<cal.getGiovedi().size(); iiii++) {
 													data = cal.getGiovedi().get(iiii);
-													Prenotazione pre = new Prenotazione(corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
+													Prenotazione pre = new Prenotazione(u, corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
 													Campo.registraPrenotazione(pre);
 													//PrenotazioneDao.insertPrenotazione(pre);
 												}
@@ -292,7 +294,7 @@ public class GestioneCorsiServlet extends HttpServlet {
 											else if(giorni[iii].equalsIgnoreCase("venerdi")) {
 												for(int iiii=0; iiii<cal.getVenerdi().size(); iiii++) {
 													data = cal.getVenerdi().get(iiii);
-													Prenotazione pre = new Prenotazione(corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
+													Prenotazione pre = new Prenotazione(u, corso, campo, data, Integer.parseInt(orari[ii].substring(0,2)), Integer.parseInt(orari[ii].substring(3)) );											
 													Campo.registraPrenotazione(pre);
 													//PrenotazioneDao.insertPrenotazione(pre);
 												}
@@ -577,6 +579,39 @@ public class GestioneCorsiServlet extends HttpServlet {
 				response.sendRedirect("eliminaCorso.jsp");
 			}
 			
+		}
+		
+		else if(azione.equalsIgnoreCase("consulta")) {
+			HttpSession currentSession = request.getSession();
+			Utente u = (Utente)currentSession.getAttribute("utente");
+			List<Prenotazione> lezioniInCalendario = new ArrayList<Prenotazione>();
+			List<Corso> listaCorsiIstruttore = ComplessoSportivo.getCorsiIstruttore(u.getId());
+			
+			int month = Integer.parseInt(request.getParameter("meseLezioni"));
+			String giorno, mese, anno;
+			LocalDate data;
+			LocalDate day = LocalDate.of(2022, month, 1);
+			
+			
+			for(Corso c: listaCorsiIstruttore) {
+				List<Prenotazione> listaPrenotazioniCorso = new ArrayList<Prenotazione>();
+				try {
+					listaPrenotazioniCorso = Prenotazione.recuperaPrenotazioniCorso(c.getId());
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				for(Prenotazione p: listaPrenotazioniCorso){
+					giorno = p.getData().substring(0, 2);
+					mese = p.getData().substring(3, 5);
+					anno = p.getData().substring(6);
+					data = LocalDate.of(Integer.parseInt(anno), Integer.parseInt(mese), Integer.parseInt(giorno));
+			        if(day.getMonth().equals(data.getMonth()) && (data.isAfter(day) || data.isEqual(day)))
+			        	lezioniInCalendario.add(p);
+				}
+			}
+			currentSession.setAttribute("calendarioLezioni", lezioniInCalendario);
+			response.sendRedirect("consultaLezioni.jsp");
 		}
 		
 

@@ -162,16 +162,26 @@ font-size: 14px;
               <%
 LocalDate oggi = LocalDate.now();
 int numeroMese = oggi.getMonthValue();
-String meseCalendario = Mese.numeroToMese(numeroMese);
+List<Prenotazione> calendarioLezioni = (List<Prenotazione>)session.getAttribute("calendarioLezioni");
+String meseCalendario;
+
+if(calendarioLezioni.size() != 0)
+	meseCalendario = Mese.meseToNumero(calendarioLezioni.get(0).getData().substring(3, 5));
+else
+	meseCalendario = Mese.numeroToMese(oggi.getMonthValue());
 %>
               <p style="margin-left: -60px; margin-bottom: 20px; width: 1000px; color: aliceblue; font-size: 40px; text-align: center;">Calendario lezioni per il mese di <%=meseCalendario %></p>
+               
+               <div style="margin-left: 50px;">
+               <div class="row">
+                <div class="col-md-6" style="margin-left: -50px; width: 600px">
                 <table>
 
 
                   
                   <tr>
 			<td><b>ID Corso</b></td>
-			<td><b>Nome del corso</b></td>
+			
 			<td><b>Sport</b></td>
 			<td><b>Campo</b></td>
 			<td><b>Data</b></td>
@@ -180,13 +190,13 @@ String meseCalendario = Mese.numeroToMese(numeroMese);
 		</tr>
                   <%
                   int idIstruttore = utente.getId();
-			List<Prenotazione> calendarioLezioni = (List<Prenotazione>)session.getAttribute("calendarioLezioni");
+			
 			for (Prenotazione p: calendarioLezioni){
 			
 						%>
 						<tr>
 							<td><%=p.getCorso().getId() %></td>
-							<td><%=p.getCorso().getDescrizione() %></td>
+						
 							<td><%=p.getCorso().getSport() %></td>
 							<td><%=p.getCampo().getId() %></td>
 							<td><%=p.getData() %></td>
@@ -200,6 +210,97 @@ String meseCalendario = Mese.numeroToMese(numeroMese);
 			%>
 
                 </table>
+                </div>
+               <form action="<%=request.getContextPath()%>/GestioneCorsiServlet" method="post">
+               <input type="hidden" id="azioneCorso" name="azioneCorso" value="consulta">
+                <div class="col-md-3" style="margin-left: -5px;">
+                    <div class="form-group">
+                      <span class="form-label">Seleziona mese</span> <select
+                        class="form-control" id="meseLezioni"
+                        name="meseLezioni">
+                       
+                      <%
+				
+				LocalDate gen = LocalDate.of(2022, 1, 15);
+				LocalDate feb = LocalDate.of(2022, 2, 15);
+				LocalDate mar = LocalDate.of(2022, 3, 15);
+				LocalDate apr = LocalDate.of(2022, 4, 15);
+				LocalDate mag = LocalDate.of(2022, 5, 15);
+				LocalDate giu = LocalDate.of(2022, 6, 15);
+				LocalDate lug = LocalDate.of(2022, 7, 15);
+				LocalDate ago = LocalDate.of(2022, 8, 15);
+				LocalDate set = LocalDate.of(2022, 9, 15);
+				LocalDate ott = LocalDate.of(2022, 10, 15);
+				LocalDate nov = LocalDate.of(2022, 11, 15);
+				
+				if(gen.isAfter(oggi)){
+				%>
+					<option value="1">Gennaio</option>
+		        <%
+				 }
+				if(feb.isAfter(oggi)){
+		        %>
+		        	<option value="2">Febbraio</option>
+				<%
+				}
+				if(mar.isAfter(oggi)){
+		        %>
+		        	<option value="3">Marzo</option>
+				<%
+				}
+				if(apr.isAfter(oggi)){
+		        %>
+		        	<option value="4">Aprile</option>
+		        <%
+				}
+				if(mag.isAfter(oggi)){
+		        %>
+		        	<option value="5">Maggio</option>
+		        	<%
+				}
+				if(giu.isAfter(oggi)){
+		        %>
+		        	<option value="6">Giugno</option>
+		        	<%
+				}
+				if(lug.isAfter(oggi)){
+		        %>
+		        	<option value="7">Luglio</option>
+		        	<%
+				}
+				if(ago.isAfter(oggi)){
+		        %>
+		        	<option value="8">Agosto</option>
+		        	<%
+				}
+				if(set.isAfter(oggi)){
+		        %>
+		        	<option value="9">Settembre</option>
+		        	<%
+				}if(ott.isAfter(oggi)){
+		        %>
+		       	 <option value="10">Ottobre</option>
+		        <%
+				}if(nov.isAfter(oggi)){
+		        %>
+		        <option value="11">Novembre</option>
+				<%
+				}
+				%>
+                       
+                       
+                      </select> <span class="select-arrow"></span>
+
+                      <div class="form-btn">
+                        <button class="submit-btn">Visualizza calendario</button>
+                      </div>
+                    </div>
+                  </div>
+                  </form>
+                  <br>
+                </div>
+                
+                </div>
 
               </div>
             </div>

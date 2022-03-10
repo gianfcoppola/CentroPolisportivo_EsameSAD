@@ -40,6 +40,7 @@ th, td {
   padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
+  max-width: 300px;
 }
 .w3-half img {
 	margin-bottom: -6px;
@@ -214,7 +215,7 @@ String mese="";
       <div id="booking" class="section" style="margin-left: -40px; height: 100%; font-size: 14px;">
         <div class="section-center" style="height: 100%;">
           <div class="container" style="height: 100%;">
-            <div class="row" style="height: 577px;">
+            <div class="row" style="height: 877px;">
               <div class="booking-form" style="height: 100%;">
                 <p style="margin-left: -60px; width: 1000px; color: aliceblue; font-size: 50px; text-align: center; margin-bottom: 30px;">Iscriviti  a un corso</p>
            		 <div style="margin-left: 50px;">
